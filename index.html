@@ -44,6 +44,24 @@
 // URL de exportação direta para CSV, a mais compatível com GitHub Pages
 const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
 
+function getSlug(name) {
+    if (!name) return "";
+    let n = name.toLowerCase()
+        .replace(/♀/g, '-f')
+        .replace(/♂/g, '-m')
+        .replace(/\./g, '')
+        .replace(/'/g, '')
+        .replace(/\s+/g, '-');
+    
+    // Trata especificamente as Mega Evoluções para o formato do PokemonDB
+    if (n.includes('mega-')) {
+        let parts = n.split('-');
+        let base = parts.filter(p => p !== 'mega');
+        return base.length > 1 ? base[0] + '-mega-' + base[1] : base[0] + '-mega';
+    }
+    return n;
+}
+			
 function normalizarNome(nome) {
     if (!nome) return "";
     return nome.toString().toLowerCase().trim().replace(/["']/g, "");
